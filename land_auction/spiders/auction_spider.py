@@ -1,5 +1,6 @@
 import scrapy
 import os
+from scrapy_splash import SplashRequest
 
 class AuctionSpider(scrapy.Spider):
     name = 'auction_spider'
@@ -10,6 +11,10 @@ class AuctionSpider(scrapy.Spider):
     # project_root = os.path.abspath(os.path.dirname(__file__))
     # file_path = os.path.join(project_root, '..', 'targeted_websites', 'qiyu_page.html')
     # start_urls = [f'file:///{file_path}']
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield SplashRequest(url, self.parse, args={'wait': 3}) # 设置javascript的加载时间
 
     def parse(self, response):
         # 提取相关信息的XPath路径
